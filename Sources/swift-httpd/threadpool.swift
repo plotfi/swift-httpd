@@ -29,7 +29,12 @@ func Consumer(pointer: UnsafeMutableRawPointer) ->
       continue
     }
     print("[CONSUMER] Handling Socket \(ClientSocket).\n")
-    close(HttpProto(socket: ClientSocket))
+
+    let Buffer = ReadFromSocket(ClientSocket)
+    let ClientSocketAsFile = fdopen(ClientSocket, "w")
+    let _ = http_proto(socket: ClientSocketAsFile, request: Buffer)
+    fclose(ClientSocketAsFile)
+    close(ClientSocket)
   }
 
   return nil

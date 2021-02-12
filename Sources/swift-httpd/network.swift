@@ -34,7 +34,7 @@ func ContructTCPSocket(portNumber : UInt16) -> Int32 {
   return Socket
 }
 
-func HttpProto(socket : Int32) -> Int32 {
+func ReadFromSocket(_ socket : Int32) -> [CChar] {
   let buffer = UnsafeMutablePointer<UInt8>
     .allocate(capacity: RecvBufferLength)
   
@@ -50,10 +50,8 @@ func HttpProto(socket : Int32) -> Int32 {
     }
   } while newBytes >= RecvBufferLength
 
-  let socketFile = fdopen(socket, "w")
-  let _ = http_proto(socket: socketFile, request: TotalBuffer)
-  fclose(socketFile)
-  return socket
+  buffer.deallocate()
+  return TotalBuffer
 }
 
 func AcceptConnection(Socket : Int32) -> Int32 {
