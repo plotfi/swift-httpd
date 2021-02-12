@@ -40,7 +40,6 @@ func getMimeTypeSwift(Name : UnsafePointer<Int8>!) -> String {
     }
 }
 
-@_cdecl("send_headers")
 func send_headers(status : Int32, title : UnsafePointer<Int8>!,
                   mime : UnsafePointer<Int8>!,
                   socket : UnsafeMutablePointer<FILE>?,
@@ -65,8 +64,6 @@ func send_headers(status : Int32, title : UnsafePointer<Int8>!,
   fflush(socket)
 }
 
-
-@_cdecl("HttpStart")
 func HttpStart(status : Int32,
                socket : UnsafeMutablePointer<FILE>?,
                color : UnsafePointer<Int8>!,
@@ -88,7 +85,6 @@ func HttpStart(status : Int32,
     fwrite(HtmlHeaderCStr, 1, strlen(HtmlHeaderCStr!), socket)
 }
 
-@_cdecl("HttpEnd")
 func HttpEnd(status: Int32, socket : UnsafeMutablePointer<FILE>?) -> Int32 {
   let HtmlFooter = "</pre><a href=\"github.com/plotfi/swift-httpd\">swift-httpd</a></body></html>\n"
   let HtmlFooterCStr = HtmlFooter.cString(using: String.Encoding.ascii)
@@ -97,7 +93,6 @@ func HttpEnd(status: Int32, socket : UnsafeMutablePointer<FILE>?) -> Int32 {
   return status
 }
 
-@_cdecl("send_error")
 func send_error(status: Int32,
                 socket : UnsafeMutablePointer<FILE>?,
                 title : UnsafePointer<Int8>!,
@@ -110,7 +105,6 @@ func send_error(status: Int32,
   return HttpEnd(status: status, socket: socket)
 }
 
-@_cdecl("doFile")
 func doFile(filename : UnsafePointer<Int8>!,
             socket : UnsafeMutablePointer<FILE>?) -> Int32 {
   do {
@@ -140,7 +134,6 @@ func doFile(filename : UnsafePointer<Int8>!,
   return 404
 }
 
-@_cdecl("CHECK")
 func CHECK(check: Int, message : UnsafePointer<Int8>!) {
   if check < 0 {
     let Message = String(cString: message)
@@ -150,7 +143,6 @@ func CHECK(check: Int, message : UnsafePointer<Int8>!) {
   }
 }
 
-@_cdecl("http_proto")
 func http_proto(socket : UnsafeMutablePointer<FILE>?,
                 request : UnsafePointer<Int8>!) -> Int32 {
   

@@ -3,7 +3,6 @@ import Foundation
 let MaxRequests : Int32 = 5
 let RecvBufferLength = 100
 
-@_cdecl("ContructTCPSocket")
 func ContructTCPSocket(portNumber : UInt16) -> Int32 {
   var SocketAddress = sockaddr_in()
   bzero(&SocketAddress, MemoryLayout.size(ofValue: SocketAddress))
@@ -35,7 +34,6 @@ func ContructTCPSocket(portNumber : UInt16) -> Int32 {
   return Socket
 }
 
-@_cdecl("HttpProto")
 func HttpProto(socket : Int32) -> Int32 {
   let buffer = UnsafeMutablePointer<UInt8>
     .allocate(capacity: RecvBufferLength)
@@ -58,7 +56,6 @@ func HttpProto(socket : Int32) -> Int32 {
   return socket
 }
 
-@_cdecl("AcceptConnection")
 func AcceptConnection(Socket : Int32) -> Int32 {
   var SocketAddress = sockaddr()
   var len : socklen_t = socklen_t(MemoryLayout.size(ofValue: SocketAddress))

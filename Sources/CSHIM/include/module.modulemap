@@ -1,0 +1,3 @@
+module CSHIM {
+  header "CSHIM.h"
+}
