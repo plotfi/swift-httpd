@@ -28,5 +28,22 @@ namespace {
 SyncQueue<int> Queue;
 }
 
-extern "C" void enqueue(int s) { Queue.enqueue(s); }
-extern "C" int dequeue() { return Queue.dequeue(); }
+extern "C"
+void *MakeSocketQueue() {
+  return new SyncQueue<int>();
+}
+
+extern "C"
+void DestroySocketQueue(void *Queue) {
+  delete(static_cast<SyncQueue<int>*>(Queue));
+}
+
+extern "C"
+void EnqueueSocket(int s, void *Queue) {
+  static_cast<SyncQueue<int>*>(Queue)->enqueue(s);
+}
+
+extern "C"
+int DequeueSocket(void *Queue) {
+  return static_cast<SyncQueue<int>*>(Queue)->dequeue();
+}
