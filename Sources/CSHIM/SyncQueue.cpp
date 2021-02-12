@@ -24,10 +24,6 @@ public:
   }
 };
 
-namespace {
-SyncQueue<int> Queue;
-}
-
 extern "C"
 void *MakeSocketQueue() {
   return new SyncQueue<int>();
