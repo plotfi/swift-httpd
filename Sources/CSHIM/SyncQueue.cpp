@@ -24,22 +24,16 @@ public:
   }
 };
 
-extern "C"
-void *MakeSocketQueue() {
-  return new SyncQueue<int>();
+extern "C" void *MakeSocketQueue() { return new SyncQueue<int>(); }
+
+extern "C" void DestroySocketQueue(void *Queue) {
+  delete (static_cast<SyncQueue<int> *>(Queue));
 }
 
-extern "C"
-void DestroySocketQueue(void *Queue) {
-  delete(static_cast<SyncQueue<int>*>(Queue));
+extern "C" void EnqueueSocket(int s, void *Queue) {
+  static_cast<SyncQueue<int> *>(Queue)->enqueue(s);
 }
 
-extern "C"
-void EnqueueSocket(int s, void *Queue) {
-  static_cast<SyncQueue<int>*>(Queue)->enqueue(s);
-}
-
-extern "C"
-int DequeueSocket(void *Queue) {
-  return static_cast<SyncQueue<int>*>(Queue)->dequeue();
+extern "C" int DequeueSocket(void *Queue) {
+  return static_cast<SyncQueue<int> *>(Queue)->dequeue();
 }

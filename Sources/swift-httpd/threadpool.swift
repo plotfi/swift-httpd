@@ -1,5 +1,5 @@
-import Foundation
 import CSHIM
+import Foundation
 
 class SocketQueue {
   private var SocketQueue = MakeSocketQueue()
@@ -9,7 +9,7 @@ class SocketQueue {
     SocketQueue = nil
   }
 
-  func enqueue(_ Socket : Int32) {
+  func enqueue(_ Socket: Int32) {
     EnqueueSocket(Socket, SocketQueue)
   }
 
@@ -21,8 +21,7 @@ class SocketQueue {
 let Sockets = SocketQueue()
 
 @_cdecl("Consumer")
-func Consumer(pointer: UnsafeMutableRawPointer) ->
-              UnsafeMutableRawPointer? {
+func Consumer(pointer: UnsafeMutableRawPointer) -> UnsafeMutableRawPointer? {
   while true {
     let ClientSocket = Sockets.dequeue()
     if ClientSocket < 0 {
@@ -41,8 +40,7 @@ func Consumer(pointer: UnsafeMutableRawPointer) ->
 }
 
 @_cdecl("Producer")
-func Producer(pointer: UnsafeMutableRawPointer) ->
-              UnsafeMutableRawPointer? {
+func Producer(pointer: UnsafeMutableRawPointer) -> UnsafeMutableRawPointer? {
   let ServerSocket = pointer.load(as: Int32.self)
   while true {
     let ClientSocket = AcceptConnection(Socket: ServerSocket)

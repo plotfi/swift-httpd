@@ -1,7 +1,7 @@
-import Foundation
 import CSHIM
+import Foundation
 
-var LOAD_DIR = ".";
+var LOAD_DIR = "."
 print("* Beginning Server, Root Directory: \(LOAD_DIR)\n")
 FileManager.default.changeCurrentDirectoryPath(LOAD_DIR)
 
