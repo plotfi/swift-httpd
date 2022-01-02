@@ -1,4 +1,3 @@
-import CSHIM
 import Foundation
 
 var LOAD_DIR = "."
@@ -7,12 +6,21 @@ FileManager.default.changeCurrentDirectoryPath(LOAD_DIR)
 
 // Sets up networking sockets used by Producer thread to AcceptConnection
 let ServerSocket = ContructTCPSocket(portNumber: 1337)
+defer { close(ServerSocket); }
 
-// Sets up c++ std::thread(s) for Swift Producer and Consumer callbacks in
-// threadpool.swift. These Producer and Consumer callbacks enqueue and dequeue
-// into a syncronized C++ std::queue implementation.
-runThreads(ServerSocket)
+// Grab the client socket requests and process them async
+while true {
+  let ClientSocket = AcceptConnection(Socket: ServerSocket)
 
-// runThread infinite loops as background threads do their thing. If 'q' is
-// pressed then runThreads exists and we return to close the ServerSocket.
-close(ServerSocket)
+  Task {
+    await HandleRequest(ClientSocket)
+  } 
+}
+
+func HandleRequest(_ ClientSocket : CInt) async {
+  let Buffer = ReadFromSocket(ClientSocket)
+  let ClientSocketAsFile = fdopen(ClientSocket, "w")
+  let _ = http_proto(socket: ClientSocketAsFile, request: Buffer)
+  fclose(ClientSocketAsFile)
+  close(ClientSocket)
+}

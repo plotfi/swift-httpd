@@ -251,7 +251,7 @@ func http_proto(
         color: "lightblue", title: "Index of " + PathTrim)
       var DirListing = ""
       for Entry in DirectoryContents {
-        DirListing += "<a href=\"\(Entry)\">\(Entry)</a>\n"
+        DirListing += "<a href=\"\(PathTrim)/\(Entry)\">\(Entry)</a>\n"
       }
       fwrite(
         DirListing.cString(using: String.Encoding.ascii),

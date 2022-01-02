@@ -12,13 +12,9 @@ let package = Package(
     dependencies: [
     ],
     targets: [
-        .target(name: "CSHIM", dependencies: []),
         .target(
             name: "swift-httpd",
-            dependencies: ["CSHIM"],
             path: "./Sources/swift-httpd",
-            sources: [ "http.swift", "main.swift",
-                       "network.swift", "threadpool.swift" ]),
-    ],
-    cxxLanguageStandard: CXXLanguageStandard.cxx14
+            sources: [ "http.swift", "main.swift", "network.swift"]),
+    ]
 )
