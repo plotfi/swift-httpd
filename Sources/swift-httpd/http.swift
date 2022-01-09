@@ -95,7 +95,7 @@ func HttpStart(
 }
 
 func HttpEnd(status: Int32, socket: UnsafeMutablePointer<FILE>?) -> Int32 {
-  let HtmlFooter = "</pre><a href=\"github.com/plotfi/swift-httpd\">swift-httpd</a></body></html>\n"
+  let HtmlFooter = "</pre><a href=\"http://github.com/plotfi/swift-httpd\">swift-httpd</a></body></html>\n"
   let HtmlFooterCStr = HtmlFooter.cString(using: String.Encoding.ascii)
   fwrite(HtmlFooterCStr, 1, strlen(HtmlFooterCStr!), socket)
   fflush(socket)
@@ -160,7 +160,7 @@ func CHECK(check: Int, message: UnsafePointer<Int8>!) {
 }
 
 func http_proto(
-  socket: UnsafeMutablePointer<FILE>?,
+  socketFile socket: UnsafeMutablePointer<FILE>?,
   request: UnsafePointer<Int8>!
 ) -> Int32 {
 
@@ -251,7 +251,7 @@ func http_proto(
         color: "lightblue", title: "Index of " + PathTrim)
       var DirListing = ""
       for Entry in DirectoryContents {
-        DirListing += "<a href=\"\(PathTrim)/\(Entry)\">\(Entry)</a>\n"
+        DirListing += "<a href=\"\(PathTrim)\(Entry)\">\(Entry)</a>\n"
       }
       fwrite(
         DirListing.cString(using: String.Encoding.ascii),

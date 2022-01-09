@@ -38,6 +38,7 @@ func ContructTCPSocket(portNumber: UInt16) -> Int32 {
 func ReadFromSocket(_ socket: Int32) -> [CChar] {
   let buffer = UnsafeMutablePointer<UInt8>
     .allocate(capacity: RecvBufferLength)
+  defer { buffer.deallocate() }
 
   var TotalBuffer = [CChar]()
   var newBytes = 0
@@ -51,7 +52,6 @@ func ReadFromSocket(_ socket: Int32) -> [CChar] {
     }
   } while newBytes >= RecvBufferLength
 
-  buffer.deallocate()
   return TotalBuffer
 }
 
