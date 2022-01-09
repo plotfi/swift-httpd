@@ -122,9 +122,15 @@ func doFile(
   socket: UnsafeMutablePointer<FILE>?
 ) -> Int32 {
   do {
-    let Contents = try Data(
-      contentsOf:
-        URL(fileURLWithPath: String(cString: filename)))
+    let filenameStr = String(cString: filename).replacingOccurrences(of: "%20", with: " ")
+    print("Handling URL Path: \(filenameStr)")
+
+    let UrlPath = URL(fileURLWithPath: filenameStr)
+    print("Is File Url: \(UrlPath.isFileURL)")
+    let Contents = try Data(contentsOf: UrlPath)
+
+    print("FOUND FILE")
+
     var rawBytes: [UInt8] = []
     Contents.withUnsafeBytes {
       rawBytes.append(contentsOf: $0)
@@ -145,9 +151,9 @@ func doFile(
     fflush(socket)
     return 200
   } catch {
+    return send_error(status: 404, socket: socket,
+                      title: "File Not Found", text: "")
   }
-
-  return 404
 }
 
 func CHECK(check: Int, message: UnsafePointer<Int8>!) {
@@ -212,9 +218,9 @@ func http_proto(
 
   let sb = UnsafeMutablePointer<stat>.allocate(capacity: 1)
   if stat(PathTrim.cString(using: String.Encoding.ascii), sb) < 0 {
-    return send_error(
-      status: 404, socket: socket,
-      title: "File Not Found", text: "")
+    //return send_error(
+    //  status: 404, socket: socket,
+    //  title: "File Not Found", text: "")
   }
 
   var isDir: ObjCBool = false
@@ -222,9 +228,9 @@ func http_proto(
     atPath: PathTrim,
     isDirectory: &isDir)
   {
-    return send_error(
-      status: 404, socket: socket,
-      title: "File Not Found", text: "")
+    // return send_error(
+    //   status: 404, socket: socket,
+    //   title: "File Not Found", text: "")
   }
 
   var readDir = false
