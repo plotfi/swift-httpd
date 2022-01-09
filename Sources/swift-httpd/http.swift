@@ -122,7 +122,9 @@ func doFile(
   socket: UnsafeMutablePointer<FILE>?
 ) -> Int32 {
   do {
-    let filenameStr = String(cString: filename).replacingOccurrences(of: "%20", with: " ")
+    guard let filenameStr = String(cString: filename).removingPercentEncoding else {
+      return 404
+    }
     print("Handling URL Path: \(filenameStr)")
 
     let UrlPath = URL(fileURLWithPath: filenameStr)
