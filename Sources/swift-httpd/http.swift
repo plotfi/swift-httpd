@@ -86,18 +86,16 @@ func HttpStart(
     status: status,
     title: TitleStatus.cString(using: String.Encoding.ascii),
     mime: Mime, socket: socket, len: -1)
-  let HtmlHeader =
+
+  let content =
     "<html><head><title>\(Title)</title></head>" + "<body bgcolor=\(Color)>"
     + "<h4>\(Title)</h4><pre>"
-
-  let HtmlHeaderCStr = HtmlHeader.cString(using: String.Encoding.ascii)
-  fwrite(HtmlHeaderCStr, 1, strlen(HtmlHeaderCStr!), socket)
+  fwrite(content, 1, content.utf8.count, socket)
 }
 
 func HttpEnd(status: Int32, socket: UnsafeMutablePointer<FILE>?) -> Int32 {
-  let HtmlFooter = "</pre><a href=\"http://github.com/plotfi/swift-httpd\">swift-httpd</a></body></html>\n"
-  let HtmlFooterCStr = HtmlFooter.cString(using: String.Encoding.ascii)
-  fwrite(HtmlFooterCStr, 1, strlen(HtmlFooterCStr!), socket)
+  let content = "</pre><a href=\"http://github.com/plotfi/swift-httpd\">swift-httpd</a></body></html>\n"
+  fwrite(content, 1, content.utf8.count, socket)
   fflush(socket)
   return status
 }
