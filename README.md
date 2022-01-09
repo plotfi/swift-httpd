@@ -1,2 +1,5 @@
 # swift-httpd
-A small http server written in Swift and C++ using raw Berkeley Sockets and std::threads.
+
+To build use SPM by running `swift build`
+
+This Swift http server uses raw sockets and async/await.
